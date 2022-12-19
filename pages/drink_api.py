@@ -53,6 +53,6 @@ def search_by_ingredient( ingredient):
         end_list = []
         for i in range(11):
             end_list.append([drink_list[i]["strDrink"], drink_list[i]["strDrinkThumb"]])
-        return end_list, True
+        return {"end_message" :end_list, "end_flag": True}
     except:
-        return ["You provided bad ingredient name"], False
+        return {"end_message" :"You provided bad ingredient name", "end_flag":False}

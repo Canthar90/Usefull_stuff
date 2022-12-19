@@ -10,9 +10,13 @@ st.set_page_config(
 
 st.title("Meet your next drink")
     
+st.subheader("Meet random drinks or search for them using ingredients")
 
-with st.expander("Random drink"):
+with st.expander("Get random drink match"):
     random_drink = st.button(label="Get random drink", key="random_drink_button")
+    
+with st.expander("Search you new drink"):
+    searching_by_name = st.text_input(label="Input drink name", help="Tel me what are you looking for")
     
     
 if random_drink:
@@ -21,3 +25,11 @@ if random_drink:
     st.image(drin_info["Image url"])
     st.write(drin_info["Description"])
     
+if searching_by_name:
+    try:
+        searched_drink = drink_api.search_by_name(searching_by_name)
+        st.subheader(searched_drink["Dring Name"])
+        st.image(searched_drink["Image url"])
+        st.write(searched_drink["Description"])
+    except TypeError:
+        st.error("You entered invalid drink name.")

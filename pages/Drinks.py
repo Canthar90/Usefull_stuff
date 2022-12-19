@@ -5,7 +5,13 @@ sys.path.insert(1, ".\\")
 
 import drink_api
 
-st.title("Simple app to meet your next drink")
+
+st.set_page_config(
+    page_title="Drink",
+    page_icon="🍺",
+)
+
+st.title("Meet your next drink")
     
 
 with st.expander("Random drink"):

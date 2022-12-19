@@ -1,7 +1,4 @@
 import streamlit as st
-import sys
-
-sys.path.insert(1, ".\\")
 
 import drink_api
 

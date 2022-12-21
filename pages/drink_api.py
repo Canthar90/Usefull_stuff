@@ -27,7 +27,6 @@ def response_refactor(response):
     name = drink["strDrink"]
     ingredients = ""
     ing_list = []
-    measurments = ""
     ingredients_list = []
     mesurs_list = []
     cutted_message = ""
@@ -56,7 +55,6 @@ def response_refactor(response):
                     f"the recipe: {drink['strInstructions']}"
         cutted_message += f"the recipe: {drink['strInstructions']}"
         
-    print(cutted_message)
     
     answers={"Full Message": message, "Dring Name":name, "Image url": image, "Description": cutted_message,
              "Recipe": drink['strInstructions'], "Ingredients": ingredients, "Ingredients list": ingredients_list}
@@ -70,7 +68,7 @@ def search_by_ingredient( ingredient):
         drink_list = response.json()
         drink_list = drink_list["drinks"]
         end_list = []
-        for i in range(11):
+        for i, v in enumerate(drink_list):
             end_list.append([drink_list[i]["strDrink"], drink_list[i]["strDrinkThumb"]])
         return {"end_message" :end_list, "end_flag": True}
     except:

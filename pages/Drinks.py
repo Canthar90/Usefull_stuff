@@ -55,21 +55,24 @@ if searching_by_name:
 if searching_by_ingredient:
     try:
         drink_by_ingredients = drink_api.search_by_ingredient(searching_by_ingredient)
-        st.title("Founded Drinks:")
-        for drink in drink_by_ingredients["end_message"]:
-            f"## {drink[0]}"
-            st.image(f"{drink[1]}", width=100)
-            button = st.button(label="Recipe", key=f"drink_{drink[0]}")
-            if button:
-                searched_drink = drink_api.search_by_name(drink[0])
-                st.subheader(searched_drink["Dring Name"])
-                st.image(searched_drink["Image url"])
-                if searched_drink["Ingredients"]:
-                    st.write("Nessesary Ingredients:")
-                    for s_ingredient in searched_drink["Ingredients list"]:
-                        st.write(s_ingredient)
-        
-                st.write(searched_drink["Recipe"])
-                st.caption(legend)
-    except TypeError:
+        if drink_by_ingredients["end_flag"]:
+            st.title("Founded Drinks:")
+            for drink in drink_by_ingredients["end_message"]:
+                st.subheader(drink[0])
+                st.image(f"{drink[1]}", width=100)
+                button = st.button(label="Recipe", key=f"drink_{drink[0]}")
+                if button:
+                    searched_drink = drink_api.search_by_name(drink[0])
+                    st.subheader(searched_drink["Dring Name"])
+                    st.image(searched_drink["Image url"])
+                    if searched_drink["Ingredients"]:
+                        st.write("Nessesary Ingredients:")
+                        for s_ingredient in searched_drink["Ingredients list"]:
+                            st.write(s_ingredient)
+            
+                    st.write(searched_drink["Recipe"])
+                    st.caption(legend)
+        else:
+            st.error("You entered invalid ingredient name")
+    except IndexError:
         st.error("You entered invalid ingredient name")

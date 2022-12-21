@@ -3,16 +3,29 @@ import streamlit as st
 import drink_api
 
 
+
 st.set_page_config(
     page_title="Drink",
-    page_icon="🍺",
+    page_icon="🍺",   
 )
 
 legend = """Pliss keep in mind that 1oz = 29.5735ml
 and tsp = teaspoon = 4.92892ml"""
 
+def my_widget(drink_name):
+    drink_recipe = drink_api.search_by_name(drink_name)
+    st.subheader(drink_recipe["Dring Name"])
+    st.image(drink_recipe["Image url"])
+    if drink_recipe["Ingredients"]:
+        st.write("Nessesary Ingredients:")
+        for ingredient in drink_recipe["Ingredients list"]:
+            st.write(ingredient)
+        
+    st.write(drink_recipe["Recipe"])
+    st.caption(legend)
+
 st.title("Meet your next drink")
-    
+st.markdown("<div id='linkto_top'></div>", unsafe_allow_html=True)       
 st.subheader("Meet random drinks or search for them using ingredients")
 
 with st.expander("Get random drink match"):
@@ -23,7 +36,7 @@ with st.expander("Search you new drink"):
     
 with st.expander("Find drink by ingredient"):
     searching_by_ingredient = st.text_input(label="Input ingredient", help="Tel me what ingredient you drink should contain")
-    
+ 
     
 if random_drink:
     drin_info = drink_api.random_drink()
@@ -39,16 +52,7 @@ if random_drink:
     
 if searching_by_name:
     try:
-        searched_drink = drink_api.search_by_name(searching_by_name)
-        st.subheader(searched_drink["Dring Name"])
-        st.image(searched_drink["Image url"])
-        if searched_drink["Ingredients"]:
-            st.write("Nessesary Ingredients:")
-            for s_ingredient in searched_drink["Ingredients list"]:
-                st.write(s_ingredient)
-            
-        st.write(searched_drink["Recipe"])
-        st.caption(legend)
+        searched_drink = my_widget(searching_by_name)
     except TypeError:
         st.error("You entered invalid drink name.")
                 
@@ -62,17 +66,12 @@ if searching_by_ingredient:
                 st.image(f"{drink[1]}", width=100)
                 button = st.button(label="Recipe", key=f"drink_{drink[0]}")
                 if button:
-                    searched_drink = drink_api.search_by_name(drink[0])
-                    st.subheader(searched_drink["Dring Name"])
-                    st.image(searched_drink["Image url"])
-                    if searched_drink["Ingredients"]:
-                        st.write("Nessesary Ingredients:")
-                        for s_ingredient in searched_drink["Ingredients list"]:
-                            st.write(s_ingredient)
-            
-                    st.write(searched_drink["Recipe"])
-                    st.caption(legend)
+                    searched_drink = my_widget(drink[0])
         else:
             st.error("You entered invalid ingredient name")
     except IndexError:
         st.error("You entered invalid ingredient name")
+        
+        
+        
+st.text("Created by Dawid Cieślak")

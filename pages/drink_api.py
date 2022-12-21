@@ -26,21 +26,40 @@ def response_refactor(response):
     image = drink["strDrinkThumb"].replace("\\", "")
     name = drink["strDrink"]
     ingredients = ""
+    ing_list = []
     measurments = ""
+    ingredients_list = []
+    mesurs_list = []
     cutted_message = ""
     for key in drink:
+        
         if "strIngredient" in key:
             if drink[key]:
-                ingredients += " " + drink[key] + ";"
+                ing_list.append(drink[key])
+
         if "strMeasure" in key:
             if drink[key]:
-                measurments += " " + drink[key] + ";"
-    message += f"{name} \n" \
-                f"{image} \n Nesesary ingredients: {ingredients} \n Ammount of the ingredients: {measurments}\n" \
-                f"the recipe: {drink['strInstructions']}"
-    cutted_message += f"Nesesary ingredients: {ingredients} \n Ammount of the ingredients: {measurments}\n" \
-                f"the recipe: {drink['strInstructions']}"
-    answers={"Full Message": message, "Dring Name":name, "Image url": image, "Description": cutted_message}
+                mesurs_list.append(drink[key])
+                
+    for ing, measur in zip(ing_list, mesurs_list):
+        ingredients += f"{ing}: {measur} \n"
+        ingredients_list.append(f"{ing}: {measur}")
+    if ingredients:
+        message += f"{name} \n" \
+                    f"{image} \n Nesesary ingredients: \n{ingredients} " \
+                    f"the recipe: {drink['strInstructions']}"
+        cutted_message += f"Nesesary ingredients: \n{ingredients}"\
+                    f"the recipe: {drink['strInstructions']}"
+    else:
+        message += f"{name} \n" \
+                    f"{image} \n " \
+                    f"the recipe: {drink['strInstructions']}"
+        cutted_message += f"the recipe: {drink['strInstructions']}"
+        
+    print(cutted_message)
+    
+    answers={"Full Message": message, "Dring Name":name, "Image url": image, "Description": cutted_message,
+             "Recipe": drink['strInstructions'], "Ingredients": ingredients, "Ingredients list": ingredients_list}
     return answers
 
 def search_by_ingredient( ingredient):

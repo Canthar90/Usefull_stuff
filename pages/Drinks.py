@@ -52,7 +52,7 @@ if random_drink:
     
 if searching_by_name:
     try:
-        searched_drink = my_widget(searching_by_name)
+        searched_drink = my_widget(searching_by_name.strip())
     except TypeError:
         st.error("You entered invalid drink name.")
                 

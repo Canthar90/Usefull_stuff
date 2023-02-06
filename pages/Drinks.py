@@ -28,6 +28,7 @@ st.title("Meet your next drink")
 st.markdown("<div id='linkto_top'></div>", unsafe_allow_html=True)       
 st.subheader("Meet random drinks or search for them using ingredients")
 
+# basic menu
 with st.expander("Get random drink match"):
     random_drink = st.button(label="Get random drink", key="random_drink_button")
     
@@ -37,7 +38,7 @@ with st.expander("Search you new drink"):
 with st.expander("Find drink by ingredient"):
     searching_by_ingredient = st.text_input(label="Input ingredient", help="Tel me what ingredient you drink should contain")
  
-    
+#  Searching random drink  
 if random_drink:
     drin_info = drink_api.random_drink()
     st.subheader(drin_info["Dring Name"])
@@ -49,16 +50,19 @@ if random_drink:
         
     st.write(drin_info["Recipe"])
     st.caption(legend)
-    
+
+# Searching dring by name
 if searching_by_name:
     try:
         searched_drink = my_widget(searching_by_name.strip())
     except TypeError:
         st.error("You entered invalid drink name.")
-                
+
+
+# Searchink drinks by ingredients 
 if searching_by_ingredient:
     try:
-        drink_by_ingredients = drink_api.search_by_ingredient(searching_by_ingredient)
+        drink_by_ingredients = drink_api.search_by_ingredient(searching_by_ingredient.strip())
         if drink_by_ingredients["end_flag"]:
             st.title("Founded Drinks:")
             for drink in drink_by_ingredients["end_message"]:
